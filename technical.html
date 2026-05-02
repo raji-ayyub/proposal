@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technical Documentation and Budget Rationale</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --deep:#07131e;
+  --deep2:#0b1d2b;
+  --panel:rgba(14,30,44,0.82);
+  --panel-soft:rgba(18,38,56,0.68);
+  --line:rgba(255,255,255,0.08);
+  --text:#eff8ff;
+  --muted:#b8cad9;
+  --blue:#59c5ff;
+  --cyan:#79f0db;
+  --green:#9af55f;
+  --mint:#27d3c2;
+  --gold:#ffe27a;
+  --mono:'Space Mono',monospace;
+  --head:'Syne',sans-serif;
+  --body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at top left, rgba(89,197,255,0.11), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(121,240,219,0.09), transparent 24%),
+    linear-gradient(180deg, var(--deep), var(--deep2));
+  color:var(--text);
+  font-family:var(--body);
+  overflow-x:hidden;
+}
+nav{
+  position:sticky;top:0;z-index:120;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 30px;background:rgba(7,19,30,0.88);
+  backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.08)
+}
+.nav-logo{
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-0.02em
+}
+.nav-logo i{margin-right:6px;color:var(--cyan);background:none;-webkit-background-clip:unset}
+.nav-link{
+  display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none;color:#dff2ff;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:999px;
+  padding:10px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase
+}
+.hero{
+  padding:88px 44px 54px;
+  position:relative;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle at 18% 34%, rgba(121,240,219,0.08) 1px, transparent 1px);
+  background-size:32px 32px;pointer-events:none
+}
+.hero-wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.15em;
+  display:flex;align-items:center;gap:12px;margin-bottom:18px;text-transform:uppercase
+}
+.eyebrow::before{content:'';width:36px;height:2px;background:var(--blue)}
+h1{
+  font-family:var(--head);font-size:clamp(40px,6vw,82px);line-height:.94;letter-spacing:-.03em;margin-bottom:20px;max-width:960px
+}
+.highlight{
+  color:rgba(89,197,255,0.08);
+  -webkit-text-stroke:1px var(--blue);text-stroke:1px var(--blue)
+}
+.spark{
+  background:linear-gradient(120deg,var(--gold),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{
+  max-width:850px;color:var(--muted);font-size:18px;line-height:1.7;margin-bottom:28px
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:980px
+}
+.stat-card{
+  padding:18px 16px;border-radius:22px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)
+}
+.stat-card strong{
+  display:block;font-family:var(--head);font-size:34px;line-height:1;color:var(--green);margin-bottom:8px
+}
+.stat-card span{
+  display:block;font-family:var(--mono);font-size:10px;color:#96afbf;letter-spacing:.08em;text-transform:uppercase
+}
+
+main{max-width:1180px;margin:0 auto;padding:0 44px 80px}
+section{padding:42px 0;border-top:1px solid rgba(255,255,255,0.06)}
+.section-tag{
+  font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.15em;
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;text-transform:uppercase
+}
+.section-tag::before{content:'';width:28px;height:2px;background:var(--cyan)}
+h2{
+  font-family:var(--head);font-size:clamp(28px,4vw,48px);line-height:1.02;letter-spacing:-.02em;margin-bottom:16px
+}
+.section-sub{
+  max-width:820px;color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:26px
+}
+.grid-2{display:grid;grid-template-columns:1.08fr .92fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.stack{display:grid;gap:16px}
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:24px 22px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+}
+.card h3{
+  font-family:var(--head);font-size:24px;color:var(--green);margin-bottom:12px
+}
+.card p,.card li,.card td,.card th{
+  color:var(--muted);font-size:15px;line-height:1.65
+}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(121,240,219,0.2);background:rgba(121,240,219,0.06);color:var(--cyan);
+  border-radius:999px;padding:7px 12px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px
+}
+.bullet-list{display:grid;gap:12px}
+.bullet{
+  display:flex;gap:12px;align-items:flex-start;padding:14px;border-radius:18px;
+  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)
+}
+.bullet i{color:var(--cyan);font-size:14px;margin-top:2px}
+.bullet span{color:#dcecf8;font-size:15px;line-height:1.55}
+.spec-list{list-style:none;display:grid;gap:12px}
+.spec-list li{padding-left:18px;position:relative;color:#dcecf8}
+.spec-list li::before{content:'+';position:absolute;left:0;top:0;color:var(--green);font-family:var(--mono);font-size:12px}
+.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.metric{
+  padding:18px 16px;border-radius:22px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)
+}
+.metric strong{
+  display:block;font-family:var(--head);font-size:34px;color:var(--cyan);line-height:1;margin-bottom:8px
+}
+.metric span{display:block;color:var(--muted);font-size:14px;line-height:1.5}
+.arch-item{
+  border-left:3px solid var(--blue);padding-left:14px
+}
+.arch-item strong{display:block;color:#f7fcff;font-size:17px;margin-bottom:4px}
+.arch-item span{display:block;color:var(--muted);font-size:14px;line-height:1.6}
+.budget-table{
+  width:100%;border-collapse:collapse;background:rgba(255,255,255,0.02);border-radius:20px;overflow:hidden
+}
+.budget-table th{
+  text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--cyan);
+  padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08)
+}
+.budget-table td{
+  padding:16px;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:top
+}
+.budget-table tr:last-child td{border-bottom:none}
+.amount{
+  font-family:var(--head);font-size:22px;color:var(--gold);white-space:nowrap
+}
+.total-card{
+  background:linear-gradient(180deg, rgba(121,240,219,0.09), rgba(89,197,255,0.06));
+  border:1px solid rgba(255,255,255,0.08)
+}
+.total{
+  font-family:var(--head);font-size:58px;line-height:.92;color:var(--gold);margin:8px 0 10px
+}
+.mini-note{color:#97b1c4;font-size:13px;line-height:1.6}
+footer{
+  max-width:1180px;margin:0 auto;padding:18px 44px 46px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,0.06)
+}
+.footer-brand{
+  font-family:var(--head);font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.footer-brand i{margin-right:6px;color:var(--cyan);background:none;-webkit-background-clip:unset}
+.footer-meta{font-family:var(--mono);font-size:11px;color:#6f889a;text-align:right}
+@media(max-width:1100px){
+  .hero-stats,.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  nav{padding:12px 18px}
+  .hero{padding:82px 18px 46px}
+  main{padding:0 18px 64px}
+  footer{padding:18px 18px 42px}
+  .hero p,.section-sub{font-size:15px}
+  .hero-stats,.metrics{grid-template-columns:1fr}
+  .budget-table{display:block;overflow-x:auto;white-space:nowrap}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo"><i class="fas fa-server"></i> TECHNICAL DOCUMENTATION // SCHOOL MANAGEMENT SYSTEM</div>
+  <a class="nav-link" href="index.html"><i class="fas fa-arrow-left"></i> Back to Proposal</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-wrap">
+    <div class="eyebrow">Architecture, Delivery Scope, and Budget Justification</div>
+    <h1>TECHNICAL <span class="highlight">DOCUMENTATION</span><br>& <span class="spark">BUDGET RATIONALE</span></h1>
+    <p>This page explains the expected engineering stack, architecture, database decisions, infrastructure footprint, and delivery team required for the School Management & Reporting System. It also breaks down how the proposed <strong>₦5,000,000</strong> contract budget is justified for a production-grade institutional platform of this scope.</p>
+    <div class="hero-stats">
+      <div class="stat-card"><strong>2</strong><span>Frontend Applications</span></div>
+      <div class="stat-card"><strong>2</strong><span>Backend Services</span></div>
+      <div class="stat-card"><strong>1</strong><span>Primary Database</span></div>
+      <div class="stat-card"><strong>₦5M</strong><span>Project Total</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section>
+    <div class="section-tag">Project Scope</div>
+    <h2>Why this project requires a serious stack</h2>
+    <p class="section-sub">This is not a simple brochure website or single dashboard. The platform must support multiple user roles, student records, academic sessions, examination workflows, report generation, financial tracking, notifications, and public-facing admission portals. That naturally pushes the implementation into a multi-application, multi-service architecture.</p>
+    <div class="metrics">
+      <div class="metric"><strong>6+</strong><span>Primary user roles with different permissions and workflows</span></div>
+      <div class="metric"><strong>12+</strong><span>Major modules spanning academics, finance, reporting, and communication</span></div>
+      <div class="metric"><strong>3</strong><span>Main interfaces: admin, self-service portal, and public-facing pages</span></div>
+      <div class="metric"><strong>1</strong><span>Institution-wide source of truth for records and analytics</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Recommended Stack</div>
+    <h2>Proposed technology stack</h2>
+    <p class="section-sub">The recommended stack prioritizes maintainability, performance, developer productivity, security, and cloud-readiness. It also matches the kind of institutional system that will likely need future extensions.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="chip"><i class="fas fa-window-maximize"></i> Frontend</div>
+        <h3>Next.js + Tailwind CSS</h3>
+        <ul class="spec-list">
+          <li>Next.js for modern routing, SSR/SSG support, API-friendly architecture, and scalable app structure.</li>
+          <li>Tailwind CSS for consistent design systems, rapid UI delivery, and maintainable styling.</li>
+          <li>Good fit for dashboards, portals, forms, and responsive data-heavy interfaces.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-code-branch"></i> Backend</div>
+        <h3>Python and Express.js Services</h3>
+        <ul class="spec-list">
+          <li>Python service layer for reporting, automation, PDF generation, data-heavy workflows, and institutional logic.</li>
+          <li>Express.js service layer for modular API endpoints, integrations, and real-time communication tooling if needed.</li>
+          <li>Separation of concerns reduces risk and keeps the system easier to extend.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-cloud"></i> Infrastructure</div>
+        <h3>AWS + Domain + Hosting</h3>
+        <ul class="spec-list">
+          <li>AWS for scalable hosting, storage, deployment control, and long-term production reliability.</li>
+          <li>Domain registration and DNS management for a professional institutional identity.</li>
+          <li>Production hosting, SSL, backups, and monitoring considered from the start.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Application Layout</div>
+    <h2>Why two frontends and two backends make sense</h2>
+    <p class="section-sub">Given the project scope, splitting responsibilities is justified. It improves maintainability, keeps interfaces focused, and prevents a single codebase from becoming too congested.</p>
+    <div class="grid-2">
+      <div class="card stack">
+        <div class="arch-item">
+          <strong>Frontend 1: Administrative Web App</strong>
+          <span>Main operational dashboard for admins, teachers, accountants, and school leadership. Handles academic management, finance, reports, timetable, communication, and analytics.</span>
+        </div>
+        <div class="arch-item">
+          <strong>Frontend 2: Public and Self-Service Portal</strong>
+          <span>Landing pages, admissions portal, parent/student login, application tracking, and self-service access. This should remain lighter and more presentation-focused than the admin system.</span>
+        </div>
+      </div>
+      <div class="card stack">
+        <div class="arch-item">
+          <strong>Backend 1: Core Business Logic API</strong>
+          <span>Handles authentication, user roles, student records, academic sessions, finance, timetable logic, dashboards, and institutional workflows.</span>
+        </div>
+        <div class="arch-item">
+          <strong>Backend 2: Reporting and Integration Service</strong>
+          <span>Supports PDF report generation, notifications, SMS/email integrations, automated processing, and potentially examination import/export or analytics jobs.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Database and Storage</div>
+    <h2>Database, file storage, and data structure</h2>
+    <p class="section-sub">A project of this nature needs a relational database with strong consistency and clear schema relationships, especially because classes, subjects, sessions, grades, invoices, payments, and reports are all interdependent.</p>
+    <div class="grid-2">
+      <div class="card">
+        <div class="chip"><i class="fas fa-database"></i> Primary Database</div>
+        <h3>PostgreSQL</h3>
+        <ul class="spec-list">
+          <li>Well-suited for relational institutional data and structured reporting.</li>
+          <li>Supports strong integrity rules, joins, indexing, and transactional workflows.</li>
+          <li>Good fit for finance, academic records, user roles, and reporting metadata.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-folder-open"></i> File and Asset Storage</div>
+        <h3>Object Storage and Media Layer</h3>
+        <ul class="spec-list">
+          <li>Student photos, logos, generated PDFs, receipts, and admission uploads should not live directly in the database.</li>
+          <li>AWS S3 or equivalent object storage is appropriate for file handling and backups.</li>
+          <li>Separation of binary files from relational records improves performance and maintainability.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <div class="chip"><i class="fas fa-sitemap"></i> Likely Core Tables</div>
+      <div class="bullet-list">
+        <div class="bullet"><i class="fas fa-check"></i><span>Users, roles, permissions, schools, departments, classes, arms, and teacher assignments.</span></div>
+        <div class="bullet"><i class="fas fa-check"></i><span>Students, parents, admissions, promotions, graduations, and transfer requests.</span></div>
+        <div class="bullet"><i class="fas fa-check"></i><span>Academic sessions, terms, subjects, assessments, exam records, and grading rubrics.</span></div>
+        <div class="bullet"><i class="fas fa-check"></i><span>Fee structures, invoices, payments, receipts, and balances.</span></div>
+        <div class="bullet"><i class="fas fa-check"></i><span>Notifications, messages, announcements, and analytics snapshots.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Infrastructure</div>
+    <h2>Cloud, deployment, and production considerations</h2>
+    <p class="section-sub">A school platform handling institutional records must be treated as a real production system. Hosting is not only about putting files online; it includes deployment environments, backups, security, monitoring, and reliability.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>AWS Layer</h3>
+        <p>Application hosting, object storage, managed database hosting, secrets management, scheduled jobs, and future scaling are best handled in a cloud environment with production controls.</p>
+      </div>
+      <div class="card">
+        <h3>Domain and SSL</h3>
+        <p>A custom domain with SSL is required for trust, school branding, secure authentication, and professional delivery to parents and staff.</p>
+      </div>
+      <div class="card">
+        <h3>Monitoring and Backups</h3>
+        <p>Database backups, file backup strategy, error monitoring, and audit-friendly operational logging should be part of the delivery expectation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Team Composition</div>
+    <h2>Recommended delivery team</h2>
+    <p class="section-sub">The budget becomes more understandable when framed around actual delivery roles. A project at this level requires design, frontend work, backend services, database planning, QA, and deployment support. These allocations are intended as contract workstreams and delivery responsibilities, not as ongoing salary commitments.</p>
+    <div class="grid-3">
+      <div class="card">
+        <div class="chip"><i class="fas fa-desktop"></i> Frontend Team</div>
+        <h3>2 Frontend Developers</h3>
+        <p>One can focus on the main admin dashboard while the other focuses on the public site, admission portal, and self-service experiences. This separation improves speed and keeps both interfaces polished.</p>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-server"></i> Backend Team</div>
+        <h3>2 Backend Developers</h3>
+        <p>One developer can own the core business logic and data APIs, while the second focuses on reporting, integrations, authentication support, communication services, and system reliability.</p>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-pen-ruler"></i> Design</div>
+        <h3>1 Product Designer</h3>
+        <p>Responsible for user flows, system consistency, form-heavy screens, report card layouts, public-facing pages, and overall experience quality.</p>
+      </div>
+    </div>
+    <div class="grid-3" style="margin-top:18px">
+      <div class="card">
+        <div class="chip"><i class="fas fa-vial"></i> Quality</div>
+        <h3>QA / Testing Support</h3>
+        <p>Even if not a full-time separate role, dedicated testing effort is necessary because the system has many role-based workflows and sensitive reporting paths.</p>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-cloud-upload-alt"></i> DevOps</div>
+        <h3>Deployment and Environment Support</h3>
+        <p>Production deployment, domain setup, server configuration, storage, backups, and release flow all require technical setup beyond pure feature coding.</p>
+      </div>
+      <div class="card">
+        <div class="chip"><i class="fas fa-user-tie"></i> Product Management</div>
+        <h3>Coordination and Delivery Oversight</h3>
+        <p>Stakeholder communication, requirement refinement, milestone tracking, and change control matter significantly in institutional software projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Budget Breakdown</div>
+    <h2>How the ₦5,000,000 budget is justified</h2>
+    <p class="section-sub">Below is a realistic project-level breakdown that explains the price not as a random lump sum, but as a combination of scope ownership, implementation effort, delivery coordination, infrastructure preparation, and project risk. The figures are best read as contract delivery allocations rather than payroll-style compensation lines.</p>
+    <div class="grid-2">
+      <div class="card">
+        <table class="budget-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>What it covers</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Product Design</strong></td>
+              <td>UI/UX flows, admin screens, portal layouts, report card presentation, responsive design system</td>
+              <td class="amount">₦500,000</td>
+            </tr>
+            <tr>
+              <td><strong>Frontend Development</strong></td>
+              <td>Admin app, public site, admissions flow, parent/student portal, dashboards, forms, responsive views</td>
+              <td class="amount">₦1,350,000</td>
+            </tr>
+            <tr>
+              <td><strong>Backend Development</strong></td>
+              <td>Authentication, role management, student records, grading logic, finance APIs, reporting, integrations</td>
+              <td class="amount">₦1,450,000</td>
+            </tr>
+            <tr>
+              <td><strong>Database and Architecture</strong></td>
+              <td>Schema planning, data modeling, migration strategy, storage structure, reporting relationships</td>
+              <td class="amount">₦450,000</td>
+            </tr>
+            <tr>
+              <td><strong>QA, Testing, and Stabilization</strong></td>
+              <td>Workflow validation, bug fixes, role testing, finance/report verification, release hardening</td>
+              <td class="amount">₦400,000</td>
+            </tr>
+            <tr>
+              <td><strong>Deployment, Domain, and Hosting Setup</strong></td>
+              <td>AWS environment preparation, storage, SSL, DNS, deployment pipeline, production configuration</td>
+              <td class="amount">₦300,000</td>
+            </tr>
+            <tr>
+              <td><strong>Project Management and Delivery Buffer</strong></td>
+              <td>Coordination, revisions, documentation, stakeholder communication, contingency for scope pressure</td>
+              <td class="amount">₦550,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card total-card">
+        <div class="chip"><i class="fas fa-scale-balanced"></i> Final Position</div>
+        <h3>Total Budget</h3>
+        <div class="total">₦5,000,000</div>
+        <p>This total is credible when viewed against the number of modules, the multiple user roles, the reporting complexity, finance functionality, public-facing portals, and the production setup required for a school platform that must actually work in the real world.</p>
+        <div class="bullet-list" style="margin-top:18px">
+          <div class="bullet"><i class="fas fa-check"></i><span>Not a single-page website, but a multi-role institutional system.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>Includes both internal operational software and external portal experiences.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>Requires engineering depth in data, security, reporting, and infrastructure.</span></div>
+        </div>
+        <p class="mini-note" style="margin-top:16px">This should be interpreted as a project contract budget covering delivery responsibility across each workstream, not as a recurring salary structure. If needed, it can later be repackaged into milestone payments, phase delivery, or optional scope tiers for stakeholder presentation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Commercial Positioning</div>
+    <h2>Why the budget is commercially reasonable</h2>
+    <p class="section-sub">For a platform that combines student management, result systems, fee management, reporting, communication, admissions, and analytics, the budget is not inflated. It reflects the actual complexity of building software that must be reliable, secure, and institution-ready, while still remaining understandable as a one-time contract delivery budget.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Multi-System in One</h3>
+        <p>The platform is effectively several systems combined: school admin software, reporting engine, fee management tool, communication hub, and public portal.</p>
+      </div>
+      <div class="card">
+        <h3>Long-Term Value</h3>
+        <p>Once deployed, the system reduces repeated manual effort, improves record quality, and supports stronger operational oversight over time.</p>
+      </div>
+      <div class="card">
+        <h3>Institutional Credibility</h3>
+        <p>Professional reporting, better parent communication, and stronger digital structure all contribute to the public image of the institution.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-brand"><i class="fas fa-star"></i> TECHNICAL DOCUMENTATION & BUDGET RATIONALE</div>
+  <div class="footer-meta">
+    Supporting document for the School Management System proposal<br>
+    Prepared for stakeholder review - 2026
+  </div>
+</footer>
+</body>
+</html>
