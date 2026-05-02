@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accelerated Starter Package</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --deep:#07131e;
+  --deep2:#0b1d2b;
+  --panel:rgba(14,30,44,0.82);
+  --panel-soft:rgba(18,38,56,0.68);
+  --line:rgba(255,255,255,0.08);
+  --text:#eff8ff;
+  --muted:#b8cad9;
+  --blue:#59c5ff;
+  --cyan:#79f0db;
+  --green:#9af55f;
+  --mint:#27d3c2;
+  --gold:#ffe27a;
+  --mono:'Space Mono',monospace;
+  --head:'Syne',sans-serif;
+  --body:'DM Sans',sans-serif;
+}
+*::selection{background:rgba(121,240,219,0.22);color:#fff}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at top left, rgba(89,197,255,0.11), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(121,240,219,0.09), transparent 24%),
+    linear-gradient(180deg, var(--deep), var(--deep2));
+  color:var(--text);
+  font-family:var(--body);
+  overflow-x:hidden;
+}
+nav{
+  position:sticky;top:0;z-index:120;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:12px 30px;background:rgba(7,19,30,0.88);
+  backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.08)
+}
+.nav-logo{
+  font-family:var(--mono);font-size:13px;font-weight:700;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-0.02em
+}
+.nav-logo i{margin-right:6px;color:var(--cyan);background:none;-webkit-background-clip:unset}
+.nav-links{display:flex;gap:10px;flex-wrap:wrap}
+.nav-link{
+  display:inline-flex;align-items:center;gap:8px;
+  text-decoration:none;color:#dff2ff;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);border-radius:999px;
+  padding:10px 14px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase
+}
+.hero{
+  padding:88px 44px 54px;
+  position:relative;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle at 18% 34%, rgba(121,240,219,0.08) 1px, transparent 1px);
+  background-size:32px 32px;pointer-events:none
+}
+.hero-wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.15em;
+  display:flex;align-items:center;gap:12px;margin-bottom:18px;text-transform:uppercase
+}
+.eyebrow::before{content:'';width:36px;height:2px;background:var(--blue)}
+h1{
+  font-family:var(--head);font-size:clamp(40px,6vw,82px);line-height:.94;letter-spacing:-.03em;margin-bottom:20px;max-width:980px
+}
+.highlight{
+  color:rgba(89,197,255,0.08);
+  -webkit-text-stroke:1px var(--blue);text-stroke:1px var(--blue)
+}
+.spark{
+  background:linear-gradient(120deg,var(--gold),var(--cyan));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.hero p{
+  max-width:860px;color:var(--muted);font-size:18px;line-height:1.7;margin-bottom:28px
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:980px
+}
+.stat-card{
+  padding:18px 16px;border-radius:22px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)
+}
+.stat-card strong{display:block;font-family:var(--head);font-size:34px;line-height:1;color:var(--green);margin-bottom:8px}
+.stat-card span{display:block;font-family:var(--mono);font-size:10px;color:#96afbf;letter-spacing:.08em;text-transform:uppercase}
+main{max-width:1180px;margin:0 auto;padding:0 44px 80px}
+section{padding:42px 0;border-top:1px solid rgba(255,255,255,0.06)}
+.section-tag{
+  font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:.15em;
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;text-transform:uppercase
+}
+.section-tag::before{content:'';width:28px;height:2px;background:var(--cyan)}
+h2{
+  font-family:var(--head);font-size:clamp(28px,4vw,48px);line-height:1.02;letter-spacing:-.02em;margin-bottom:16px
+}
+.section-sub{
+  max-width:840px;color:var(--muted);font-size:16px;line-height:1.7;margin-bottom:26px
+}
+.grid-2{display:grid;grid-template-columns:1.06fr .94fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.stack{display:grid;gap:16px}
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:24px 22px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+}
+.card h3{
+  font-family:var(--head);font-size:24px;color:var(--green);margin-bottom:12px
+}
+.card p{color:#dcecf8;font-size:15px;line-height:1.68}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(121,240,219,0.18);
+  background:rgba(121,240,219,0.08);
+  color:var(--cyan);font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:14px
+}
+.bullet-list{display:grid;gap:12px}
+.bullet{
+  display:flex;gap:12px;align-items:flex-start;
+  padding:14px 15px;border-radius:20px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)
+}
+.bullet i{color:var(--cyan);margin-top:3px}
+.bullet span{color:#dcecf8;font-size:15px;line-height:1.58}
+.budget-table{
+  width:100%;border-collapse:collapse;font-size:14px;color:#e7f4ff
+}
+.budget-table th{
+  text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  padding:14px 12px;border-bottom:1px solid rgba(255,255,255,0.08);color:#9fdaf0
+}
+.budget-table td{
+  padding:14px 12px;vertical-align:top;border-bottom:1px solid rgba(255,255,255,0.06);line-height:1.55
+}
+.budget-table tr:last-child td{border-bottom:none}
+.amount{white-space:nowrap;font-weight:700;color:var(--gold)}
+.total-card{
+  background:linear-gradient(180deg, rgba(26,59,83,0.85), rgba(9,24,38,0.92));
+}
+.total{
+  font-family:var(--head);font-size:52px;line-height:1;color:var(--gold);margin:14px 0 16px
+}
+.mini-note{color:#97adbb;font-size:13px;line-height:1.65}
+footer{
+  padding:30px 44px 44px;border-top:1px solid rgba(255,255,255,0.06);
+  display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;max-width:1180px;margin:0 auto;color:#9cb5c5
+}
+.footer-brand{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.footer-meta{font-size:14px;line-height:1.7;text-align:right}
+@media (max-width:980px){
+  .hero-stats,.grid-2,.grid-3{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  nav,.hero,main,footer{padding-left:20px;padding-right:20px}
+  .hero{padding-top:72px}
+  .hero-stats,.grid-2,.grid-3{grid-template-columns:1fr}
+  .budget-table{display:block;overflow-x:auto;white-space:nowrap}
+  .footer-meta{text-align:left}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-logo"><i class="fas fa-layer-group"></i> ACCELERATED STARTER PACKAGE</div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html"><i class="fas fa-arrow-left"></i> Main Proposal</a>
+    <a class="nav-link" href="technical.html"><i class="fas fa-server"></i> Technical Doc</a>
+    <a class="nav-link" href="implementation.html"><i class="fas fa-road"></i> Implementation</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-wrap">
+    <div class="eyebrow">Alternative Option for Faster Deployment</div>
+    <h1>ACCELERATED <span class="highlight">STARTER</span><br><span class="spark">PACKAGE</span></h1>
+    <p>This option is designed for institutions that want to begin with a strong digital foundation while keeping the first phase more cost-conscious and faster to deploy. It focuses on essential functions, professional presentation, and a practical starting structure that can be expanded in later phases.</p>
+    <div class="hero-stats">
+      <div class="stat-card"><strong>NGN 1.5M</strong><span>Budget Ceiling</span></div>
+      <div class="stat-card"><strong>4-6</strong><span>Weeks Target</span></div>
+      <div class="stat-card"><strong>Core</strong><span>Modules First</span></div>
+      <div class="stat-card"><strong>Phase 2</strong><span>Expansion Ready</span></div>
+    </div>
+  </div>
+</section>
+
+<main>
+  <section>
+    <div class="section-tag">Positioning</div>
+    <h2>What this option is designed to achieve</h2>
+    <p class="section-sub">This package is intended for a school that wants to start with a professional and functional digital system without delaying implementation while a larger first phase is being considered. It provides a practical entry point with clearer cost control, faster deployment, and room for structured future growth.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Faster Time to Launch</h3>
+        <p>The delivery approach allows the school to go live more quickly by building around proven structures and focusing on the highest-priority areas first.</p>
+      </div>
+      <div class="card">
+        <h3>Lower Initial Commitment</h3>
+        <p>The institution can begin with a more manageable first-phase budget while still receiving a credible and useful operational result.</p>
+      </div>
+      <div class="card">
+        <h3>Better for Early Adoption</h3>
+        <p>This route helps the school begin digitizing key processes now while preserving the option to deepen the platform as usage grows.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Approach</div>
+    <h2>How the accelerated version keeps costs controlled</h2>
+    <p class="section-sub">The main savings come from a more focused first-phase scope, a practical delivery model, and the use of proven foundations that reduce avoidable build time while still preserving quality and clarity.</p>
+    <div class="grid-2">
+      <div class="stack">
+        <div class="card">
+          <div class="chip"><i class="fas fa-clone"></i> Proven Foundation</div>
+          <h3>Use established interface foundations</h3>
+          <p>The platform can be delivered more quickly by working from polished dashboard and portal structures that are then adapted to reflect the school brand, content, and operational needs.</p>
+        </div>
+        <div class="card">
+          <div class="chip"><i class="fas fa-sliders-h"></i> Focused Scope</div>
+          <h3>Start with the most valuable essentials</h3>
+          <p>This version focuses on the areas that create immediate value first, such as admissions, student records, public information pages, basic result access, and foundational administrative workflows.</p>
+        </div>
+      </div>
+      <div class="card">
+          <div class="chip"><i class="fas fa-check-circle"></i> Best Fit</div>
+          <h3>Most suitable when the goal is a practical first phase</h3>
+          <div class="bullet-list">
+          <div class="bullet"><i class="fas fa-check"></i><span>The school wants to begin sooner instead of waiting for a longer first delivery cycle.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>The first phase needs to remain within a tighter commercial threshold.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>Essential operational functions matter more immediately than deeper customization.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>The institution is comfortable treating this as a first phase that can be expanded later.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Included Scope</div>
+    <h2>What would be included in the starter package</h2>
+    <p class="section-sub">To keep delivery fast and commercially efficient, this version stays centered on visible, high-value essentials rather than attempting every long-term feature from the first phase.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Public Website and School Profile</h3>
+        <p>Home, about, academics overview, admissions information, contact pages, and a clean school presentation layer.</p>
+      </div>
+      <div class="card">
+        <h3>Basic Admin Operations</h3>
+        <p>Student record management, class/session setup, simple staff access, content updates, and selected operational forms.</p>
+      </div>
+      <div class="card">
+        <h3>Foundational Portal Features</h3>
+        <p>Login, profile access, limited result visibility, simple notice flow, and selected parent or student self-service actions.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:18px">
+      <div class="chip"><i class="fas fa-hourglass-half"></i> Future Expansion</div>
+      <h3>What can be reserved for a later phase</h3>
+      <p>Advanced analytics, more specialized reporting depth, broader finance workflows, deeper integrations, and more extensive process automation are better positioned as later upgrades once the core platform is already active and delivering value.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Delivery Model</div>
+    <h2>Practical structure for a faster first phase</h2>
+    <p class="section-sub">The delivery model remains modern and dependable, but it is intentionally kept practical. The priority in this option is a stable, professional, and efficient first rollout rather than a deeply customized platform from day one.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Presentation Layer</h3>
+        <p>A modern and responsive web experience can still be delivered while keeping the visual and interface approach efficient and easy to adapt.</p>
+      </div>
+      <div class="card">
+        <h3>Operational Logic</h3>
+        <p>Only the workflows that genuinely require custom handling are prioritized in this phase, helping the solution remain practical, reliable, and faster to implement.</p>
+      </div>
+      <div class="card">
+        <h3>Hosting and Go-Live</h3>
+        <p>Hosting, domain setup, security basics, and launch preparation can still be included, while keeping the operational setup appropriate for an early-stage deployment.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Budget Option</div>
+    <h2>Suggested budget for the accelerated option</h2>
+    <p class="section-sub">This version should be read as a lower-cost contract option for a faster first phase. The figures below reflect adaptation, implementation, launch readiness, and coordinated delivery rather than a fully customized first-stage build.</p>
+    <div class="grid-2">
+      <div class="card">
+        <table class="budget-table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>What it covers</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Interface Adaptation and Branding</strong></td>
+              <td>Dashboard and portal adaptation, school branding, layout adjustments, and visual refinement</td>
+              <td class="amount">NGN 250,000</td>
+            </tr>
+            <tr>
+              <td><strong>Portal and Frontend Setup</strong></td>
+              <td>Page setup, portal structure, forms, content sections, dashboard screens, and responsive refinement</td>
+              <td class="amount">NGN 350,000</td>
+            </tr>
+            <tr>
+              <td><strong>Core Operations Setup</strong></td>
+              <td>Login flows, essential records management, basic workflow handling, and required operational logic</td>
+              <td class="amount">NGN 350,000</td>
+            </tr>
+            <tr>
+              <td><strong>Records and Content Preparation</strong></td>
+              <td>Initial content structuring, key data setup guidance, and foundational administrative configuration</td>
+              <td class="amount">NGN 180,000</td>
+            </tr>
+            <tr>
+              <td><strong>Quality Review and Launch Readiness</strong></td>
+              <td>Essential testing, issue resolution, mobile checks, launch preparation, and live-readiness review</td>
+              <td class="amount">NGN 150,000</td>
+            </tr>
+            <tr>
+              <td><strong>Hosting, Domain, and Deployment Setup</strong></td>
+              <td>Cloud deployment, domain connection, SSL, basic storage, and launch configuration</td>
+              <td class="amount">NGN 100,000</td>
+            </tr>
+            <tr>
+              <td><strong>Project Coordination and Contingency</strong></td>
+              <td>Communication, revisions, delivery coordination, and light contingency allowance</td>
+              <td class="amount">NGN 120,000</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card total-card">
+        <div class="chip"><i class="fas fa-gauge-high"></i> Commercial Position</div>
+        <h3>Total Budget Ceiling</h3>
+        <div class="total">NGN 1.5M</div>
+        <p>This alternative option is designed for schools that want a more affordable starting point without delaying digital progress. It favors speed, presentation quality, and core operational value over deep first-phase customization.</p>
+        <div class="bullet-list" style="margin-top:18px">
+          <div class="bullet"><i class="fas fa-check"></i><span>Lower entry cost for a serious first step into digitization.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>Better suited to a faster first-phase contract timeline.</span></div>
+          <div class="bullet"><i class="fas fa-check"></i><span>Leaves room for a more advanced second phase when usage and value are established.</span></div>
+        </div>
+        <p class="mini-note" style="margin-top:16px">This page is best used as an alternative commercial option where the client prefers a more measured first step, faster delivery, and stronger cost control.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-tag">Commercial Framing</div>
+    <h2>Why this option still presents well to stakeholders</h2>
+    <p class="section-sub">A lower budget does not have to mean a weak result. When the scope is deliberately controlled and the first phase is positioned properly, the school can still receive a professional, credible, and useful outcome with a more accessible commercial entry point.</p>
+    <div class="grid-3">
+      <div class="card">
+        <h3>Professional First Impression</h3>
+        <p>The institution still gains a more polished digital face and a cleaner online presence than a purely manual or outdated setup.</p>
+      </div>
+      <div class="card">
+        <h3>Operational Starting Point</h3>
+        <p>Core records, admissions visibility, and selected internal workflows can begin moving into a more structured digital system.</p>
+      </div>
+      <div class="card">
+        <h3>Upgrade Path Preserved</h3>
+        <p>Once the school sees value and adoption improves, later phases can deepen reporting, finance, analytics, and process automation.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-brand"><i class="fas fa-star"></i> ACCELERATED STARTER PACKAGE</div>
+  <div class="footer-meta">
+    Alternative commercial page for a faster and lighter first phase<br>
+    Prepared for stakeholder review - 2026
+  </div>
+</footer>
+</body>
+</html>
