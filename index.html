@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>School Management & Reporting System Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --deep:#07131e;
+  --deep2:#0b1d2b;
+  --panel:rgba(14,30,44,0.82);
+  --panel-soft:rgba(18,38,56,0.68);
+  --line:rgba(255,255,255,0.08);
+  --text:#eff8ff;
+  --muted:#b8cad9;
+  --blue:#59c5ff;
+  --cyan:#79f0db;
+  --green:#9af55f;
+  --mint:#27d3c2;
+  --gold:#ffe27a;
+  --mono:'Space Mono',monospace;
+  --head:'Syne',sans-serif;
+  --body:'DM Sans',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at top left, rgba(89,197,255,0.11), transparent 26%),
+    radial-gradient(circle at bottom right, rgba(121,240,219,0.09), transparent 24%),
+    linear-gradient(180deg, var(--deep), var(--deep2));
+  color:var(--text);
+  font-family:var(--body);
+  overflow:hidden;
+}
+button{font:inherit}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:120;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 30px;
+  background:rgba(7,19,30,0.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+.nav-logo{
+  font-family:var(--mono);
+  font-size:13px;
+  font-weight:700;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  letter-spacing:-0.02em;
+}
+.nav-logo i{
+  margin-right:6px;
+  color:var(--cyan);
+  background:none;
+  -webkit-background-clip:unset;
+}
+.nav-links{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.nav-links button{
+  border:none;
+  background:none;
+  cursor:pointer;
+  font-family:var(--mono);
+  font-size:10px;
+  color:#94aebe;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  transition:color .2s ease;
+}
+.nav-links button:hover,
+.nav-links button.is-active{
+  color:var(--cyan);
+}
+
+.deck-shell{
+  position:relative;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+}
+.deck-grid{
+  position:absolute;inset:0;
+  background-image:radial-gradient(circle at 18% 34%, rgba(121,240,219,0.08) 1px, transparent 1px);
+  background-size:32px 32px;
+  pointer-events:none;
+}
+.deck-glow-a,
+.deck-glow-b{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(28px);
+  pointer-events:none;
+}
+.deck-glow-a{
+  width:520px;height:520px;right:-8%;bottom:-16%;
+  background:radial-gradient(circle, rgba(89,197,255,0.16), transparent 60%);
+}
+.deck-glow-b{
+  width:360px;height:360px;left:-6%;top:10%;
+  background:radial-gradient(circle, rgba(121,240,219,0.12), transparent 60%);
+}
+
+.slides{
+  position:relative;
+  width:100%;
+  height:100%;
+}
+.slide{
+  position:absolute;
+  inset:0;
+  padding:90px 44px 92px;
+  overflow-y:auto;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateX(42px) scale(0.988);
+  transition:opacity .35s ease, transform .35s ease, visibility .35s ease;
+}
+.slide.is-active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateX(0) scale(1);
+}
+.slide-wrap{
+  min-height:calc(100vh - 182px);
+  height:auto;
+  display:grid;
+  grid-template-rows:auto auto auto;
+  gap:20px;
+}
+.slide-top{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  align-items:flex-end;
+}
+.slide-kicker{
+  font-family:var(--mono);
+  font-size:11px;
+  color:var(--cyan);
+  letter-spacing:0.14em;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+  text-transform:uppercase;
+}
+.slide-kicker::before{
+  content:'';
+  width:34px;
+  height:2px;
+  background:var(--blue);
+}
+.slide-title{
+  font-family:var(--head);
+  font-size:clamp(36px,5vw,76px);
+  line-height:0.94;
+  letter-spacing:-0.03em;
+  max-width:880px;
+}
+.highlight{
+  color:rgba(89,197,255,0.08);
+  -webkit-text-stroke:1px var(--blue);
+  text-stroke:1px var(--blue);
+}
+.spark{
+  background:linear-gradient(120deg,var(--gold),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.slide-index{
+  flex:0 0 auto;
+  font-family:var(--mono);
+  font-size:11px;
+  color:#91abbe;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+}
+
+.surface{
+  min-height:auto;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:32px;
+  backdrop-filter:blur(10px);
+  overflow:visible;
+  padding:28px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.25);
+}
+
+.hero-layout{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:22px;
+  height:100%;
+}
+.hero-lead{
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+  max-width:760px;
+  margin-bottom:26px;
+}
+.stats-row{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;
+}
+.stat-card{
+  padding:18px 16px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+}
+.stat-card strong{
+  display:block;
+  font-family:var(--head);
+  font-size:34px;
+  line-height:1;
+  color:var(--green);
+  margin-bottom:8px;
+}
+.stat-card span{
+  display:block;
+  font-family:var(--mono);
+  font-size:10px;
+  color:#96afbf;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.sidebar-stack,
+.stack{
+  display:grid;
+  gap:16px;
+}
+.info-card,
+.feature-card,
+.metric-card,
+.chart-card,
+.timeline-card,
+.quote-card{
+  background:var(--panel-soft);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:24px;
+  padding:20px;
+}
+.info-card h3,
+.feature-card h3,
+.metric-card h3,
+.chart-title,
+.timeline-title{
+  font-family:var(--head);
+  font-size:22px;
+  color:var(--green);
+  margin-bottom:10px;
+}
+.info-card p,
+.feature-card p,
+.metric-card p,
+.quote-card p,
+.timeline-card p,
+.mini-note,
+.body-copy{
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.65;
+}
+
+.two-col{
+  display:grid;
+  grid-template-columns:1.12fr .88fr;
+  gap:20px;
+}
+.body-copy{
+  max-width:760px;
+  margin-bottom:20px;
+}
+
+.bullet-grid{
+  display:grid;
+  gap:12px;
+}
+.bullet{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.bullet i{
+  color:var(--cyan);
+  font-size:14px;
+  margin-top:2px;
+}
+.bullet span{
+  color:#dcecf8;
+  font-size:15px;
+  line-height:1.55;
+}
+
+.quad-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.mini-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  border:1px solid rgba(121,240,219,0.2);
+  background:rgba(121,240,219,0.06);
+  color:var(--cyan);
+  border-radius:999px;
+  padding:7px 12px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+
+.arch-list{
+  display:grid;
+  gap:16px;
+}
+.arch-item{
+  border-left:3px solid var(--blue);
+  padding-left:14px;
+}
+.arch-item strong{
+  display:block;
+  color:#f7fcff;
+  font-size:17px;
+  margin-bottom:4px;
+}
+.arch-item span{
+  display:block;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.58;
+}
+
+.benefit-bars{
+  display:flex;
+  align-items:flex-end;
+  gap:14px;
+  height:230px;
+  margin-top:20px;
+  padding:6px 4px 26px;
+}
+.bar{
+  flex:1;
+  min-height:60px;
+  border-radius:18px 18px 8px 8px;
+  position:relative;
+  background:linear-gradient(180deg,var(--blue),var(--cyan));
+}
+.bar.alt{
+  background:linear-gradient(180deg,var(--green),var(--mint));
+}
+.bar em{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  top:10px;
+  font-style:normal;
+  font-family:var(--mono);
+  font-size:10px;
+  color:#04131d;
+  font-weight:700;
+}
+.bar span{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:-24px;
+  white-space:nowrap;
+  font-family:var(--mono);
+  font-size:10px;
+  color:#94aebf;
+}
+
+.module-layout{
+  display:grid;
+  grid-template-columns:1fr .9fr;
+  gap:20px;
+}
+.feature-card ul{
+  list-style:none;
+  display:grid;
+  gap:12px;
+}
+.feature-card li{
+  color:#dcebf7;
+  font-size:15px;
+  line-height:1.55;
+  padding-left:18px;
+  position:relative;
+}
+.feature-card li::before{
+  content:'+';
+  position:absolute;
+  left:0;
+  top:0;
+  color:var(--green);
+  font-family:var(--mono);
+  font-size:12px;
+}
+
+.impact-panel{
+  display:grid;
+  gap:14px;
+}
+.impact-box{
+  padding:16px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.impact-box strong{
+  display:block;
+  color:var(--cyan);
+  font-size:16px;
+  margin-bottom:6px;
+}
+.impact-box span{
+  display:block;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+}
+
+.summary-metrics{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.summary-metrics .metric-card strong{
+  display:block;
+  font-family:var(--head);
+  font-size:34px;
+  line-height:1;
+  color:var(--cyan);
+  margin-bottom:8px;
+}
+
+.timeline{
+  display:grid;
+  gap:12px;
+}
+.timeline-step{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.05);
+}
+.timeline-step strong{
+  width:34px;
+  height:34px;
+  flex:0 0 34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(89,197,255,0.16);
+  color:var(--cyan);
+  font-family:var(--mono);
+  font-size:12px;
+}
+.timeline-step span{
+  color:#dae9f5;
+  font-size:14px;
+  line-height:1.55;
+}
+
+.budget-layout{
+  display:grid;
+  grid-template-columns:1.06fr .94fr;
+  gap:20px;
+}
+.budget-amount{
+  font-family:var(--head);
+  font-size:60px;
+  line-height:0.92;
+  color:var(--gold);
+  margin-bottom:10px;
+}
+.budget-note{
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.65;
+}
+
+.thank-box{
+  height:100%;
+  display:grid;
+  place-items:center;
+  text-align:center;
+  padding:46px 32px;
+  border-radius:30px;
+  background:linear-gradient(180deg, rgba(121,240,219,0.09), rgba(89,197,255,0.06));
+  border:1px solid rgba(255,255,255,0.08);
+}
+.thank-box h3{
+  font-family:var(--head);
+  font-size:48px;
+  margin-bottom:14px;
+}
+.thank-box p{
+  max-width:760px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:17px;
+  line-height:1.7;
+}
+
+.slide-footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:0 4px;
+}
+.slide-caption{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#7e97aa;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+.slide-progress{
+  height:6px;
+  width:220px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  overflow:hidden;
+}
+.slide-progress > span{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+}
+
+.deck-nav{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:80;
+}
+.nav-arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:62px;
+  height:62px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(7,19,30,0.78);
+  color:#f5fcff;
+  font-size:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  opacity:0;
+  transition:opacity .22s ease, transform .22s ease, border-color .22s ease, background .22s ease;
+  pointer-events:auto;
+}
+.nav-arrow:hover{
+  transform:translateY(-50%) scale(1.03);
+  border-color:rgba(121,240,219,0.42);
+  background:rgba(11,29,43,0.92);
+}
+.nav-arrow.prev{left:18px}
+.nav-arrow.next{right:18px}
+.deck-shell:hover .nav-arrow,
+.deck-shell:focus-within .nav-arrow{
+  opacity:1;
+}
+
+.slide-dots{
+  position:absolute;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  z-index:85;
+  flex-wrap:wrap;
+  justify-content:center;
+  max-width:min(90vw,760px);
+}
+.slide-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  border:none;
+  cursor:pointer;
+  background:rgba(255,255,255,0.26);
+  transition:transform .18s ease, background .18s ease;
+}
+.slide-dot.is-active{
+  background:var(--cyan);
+  transform:scale(1.14);
+}
+
+.proposal-footer{
+  position:absolute;
+  left:26px;
+  right:26px;
+  bottom:54px;
+  z-index:50;
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  pointer-events:none;
+}
+.proposal-footer .brand{
+  font-family:var(--head);
+  font-size:22px;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.proposal-footer .brand i{
+  margin-right:6px;
+  color:var(--cyan);
+  background:none;
+  -webkit-background-clip:unset;
+}
+.proposal-footer .meta{
+  font-family:var(--mono);
+  font-size:11px;
+  color:#6f889a;
+  text-align:right;
+}
+
+@media(max-width:1100px){
+  .hero-layout,
+  .two-col,
+  .module-layout,
+  .budget-layout{
+    grid-template-columns:1fr;
+  }
+  .stats-row{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media(max-width:900px){
+  body{overflow:auto}
+  nav{
+    padding:12px 18px;
+  }
+  .nav-links{display:none}
+  .deck-shell{
+    height:auto;
+    min-height:100vh;
+    overflow:visible;
+  }
+  .slides{
+    height:auto;
+  }
+  .slide{
+    position:relative;
+    inset:auto;
+    display:none;
+    padding:86px 18px 138px;
+    overflow:visible;
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+  }
+  .slide.is-active{
+    display:block;
+  }
+  .slide-wrap{
+    height:auto;
+  }
+  .surface{
+    max-height:none;
+    height:auto;
+  }
+  .stats-row,
+  .quad-grid,
+  .summary-metrics{
+    grid-template-columns:1fr;
+  }
+  .nav-arrow{
+    opacity:1;
+    width:48px;
+    height:48px;
+    top:auto;
+    bottom:94px;
+    transform:none;
+  }
+  .nav-arrow:hover{
+    transform:scale(1.03);
+  }
+  .nav-arrow.prev{left:14px}
+  .nav-arrow.next{right:14px}
+  .proposal-footer{
+    position:relative;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    padding:0 18px 74px;
+    flex-direction:column;
+  }
+  .slide-dots{
+    bottom:20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><i class="fas fa-school"></i> PROJECT PROPOSAL // SCHOOL MANAGEMENT SYSTEM</div>
+  <div class="nav-links">
+    <button type="button" data-go="0" class="is-active">Overview</button>
+    <button type="button" data-go="2">Value</button>
+    <button type="button" data-go="3">Modules</button>
+    <button type="button" data-go="14">Budget</button>
+    <button type="button" data-go="16">Close</button>
+  </div>
+</nav>
+
+<div class="deck-shell" id="deck">
+  <div class="deck-grid"></div>
+  <div class="deck-glow-a"></div>
+  <div class="deck-glow-b"></div>
+
+  <div class="slides">
+    <section class="slide is-active" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 01 // Title Slide</div>
+            <div class="slide-title">SCHOOL <span class="highlight">MANAGEMENT</span><br>& REPORTING <span class="spark">SYSTEM</span></div>
+          </div>
+          <div class="slide-index">01 / 17</div>
+        </div>
+        <div class="surface hero-layout">
+          <div>
+            <p class="hero-lead">Comprehensive Digital Solution for Educational Excellence</p>
+            <p class="hero-lead">A modern school management platform designed to bring academics, finance, communication, reporting, and institutional visibility into one secure and professional digital environment.</p>
+            <div class="stats-row">
+              <div class="stat-card"><strong>17</strong><span>Presentation Slides</span></div>
+              <div class="stat-card"><strong>12+</strong><span>Core Modules</span></div>
+              <div class="stat-card"><strong>1</strong><span>Unified Platform</span></div>
+              <div class="stat-card"><strong>₦5M</strong><span>Project Budget</span></div>
+            </div>
+          </div>
+          <div class="sidebar-stack">
+            <div class="info-card">
+              <div class="mini-chip"><i class="fas fa-layer-group"></i> Proposal Focus</div>
+              <h3>Institution-Wide Digitization</h3>
+              <p>Built to streamline academic, financial, and administrative operations while improving accuracy, transparency, and service delivery.</p>
+            </div>
+            <div class="info-card">
+              <div class="mini-chip"><i class="fas fa-users"></i> Intended Users</div>
+              <p>Administrators, teachers, accountants, students, parents, and school leadership teams.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Comprehensive digital solution for educational excellence</div>
+          <div class="slide-progress"><span style="width:6%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 02 // Overview</div>
+            <div class="slide-title">A CENTRALIZED PLATFORM FOR<br><span class="spark">MODERN SCHOOL OPERATIONS</span></div>
+          </div>
+          <div class="slide-index">02 / 17</div>
+        </div>
+        <div class="surface two-col">
+          <div>
+            <p class="body-copy">This proposal presents the development of a School Management & Reporting Platform designed to unify student information, academic workflows, financial operations, communication tools, and institutional analytics into one secure system.</p>
+            <p class="body-copy">Rather than relying on fragmented manual processes, the school gains a structured digital ecosystem that improves consistency, reduces overhead, and strengthens decision-making at every operational level.</p>
+            <div class="bullet-grid">
+              <div class="bullet"><i class="fas fa-check"></i><span>Centralized records and controlled access to institutional data.</span></div>
+              <div class="bullet"><i class="fas fa-check"></i><span>Professional-grade reporting and administrative visibility.</span></div>
+              <div class="bullet"><i class="fas fa-check"></i><span>Scalable module design for future institutional growth.</span></div>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="quote-card">
+              <div class="mini-chip"><i class="fas fa-shield-alt"></i> Core Promise</div>
+              <p>One secure platform for academics, finance, communication, and reporting.</p>
+            </div>
+            <div class="quote-card">
+              <div class="mini-chip"><i class="fas fa-eye"></i> Strategic Outcome</div>
+              <p>Better visibility across institutional operations, stronger process control, and a more professional stakeholder experience.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Centralization, efficiency, transparency, and growth</div>
+          <div class="slide-progress"><span style="width:12%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 03 // Key Objectives</div>
+            <div class="slide-title">KEY OBJECTIVES &<br><span class="spark">VALUE PROPOSITION</span></div>
+          </div>
+          <div class="slide-index">03 / 17</div>
+        </div>
+        <div class="surface two-col">
+          <div class="bullet-grid">
+            <div class="bullet"><i class="fas fa-bullseye"></i><span>Digitize and automate core academic processes including grading, attendance, timetables, and report generation.</span></div>
+            <div class="bullet"><i class="fas fa-bullseye"></i><span>Strengthen communication among teachers, parents, and administrators through structured channels.</span></div>
+            <div class="bullet"><i class="fas fa-bullseye"></i><span>Centralize financial workflows with fee structures, invoicing, receipts, and payment tracking.</span></div>
+            <div class="bullet"><i class="fas fa-bullseye"></i><span>Provide dashboards and analytics that surface actionable institutional insights.</span></div>
+            <div class="bullet"><i class="fas fa-bullseye"></i><span>Deliver customizable and professional report cards with branding, grading keys, and signatures.</span></div>
+          </div>
+          <div class="quad-grid">
+            <div class="info-card"><h3>Efficiency</h3><p>Less manual work and fewer duplicated processes.</p></div>
+            <div class="info-card"><h3>Transparency</h3><p>Stronger operational visibility across records and finances.</p></div>
+            <div class="info-card"><h3>Control</h3><p>Role-based structure, session locks, and cleaner governance.</p></div>
+            <div class="info-card"><h3>Professionalism</h3><p>Institution-grade outputs and better stakeholder confidence.</p></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Digitize, centralize, communicate, and report better</div>
+          <div class="slide-progress"><span style="width:18%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 04 // Architecture and Benefits</div>
+            <div class="slide-title">SYSTEM ARCHITECTURE &<br><span class="spark">HIGH-LEVEL BENEFITS</span></div>
+          </div>
+          <div class="slide-index">04 / 17</div>
+        </div>
+        <div class="surface two-col">
+          <div class="info-card">
+            <h3>High-Level Structure</h3>
+            <div class="arch-list">
+              <div class="arch-item"><strong>User and access layer</strong><span>Controlled role-based access for administrators, teachers, accountants, parents, and students.</span></div>
+              <div class="arch-item"><strong>Academic operations layer</strong><span>Classes, grading, sessions, reports, examinations, and timetables managed centrally.</span></div>
+              <div class="arch-item"><strong>Financial operations layer</strong><span>Fees, invoices, receipts, balances, and reporting synchronized in one system.</span></div>
+              <div class="arch-item"><strong>Communication and analytics layer</strong><span>Announcements, notifications, dashboards, and alerts for faster institutional response.</span></div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Expected benefit profile</div>
+            <p class="mini-note">Illustrative operational impact areas for the platform.</p>
+            <div class="benefit-bars">
+              <div class="bar" style="height:80%"><em>80%</em><span>Efficiency</span></div>
+              <div class="bar alt" style="height:72%"><em>72%</em><span>Reporting</span></div>
+              <div class="bar" style="height:68%"><em>68%</em><span>Visibility</span></div>
+              <div class="bar alt" style="height:76%"><em>76%</em><span>Control</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Secure, role-based, modular, and scalable by design</div>
+          <div class="slide-progress"><span style="width:24%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 05 // User Management</div>
+            <div class="slide-title">USER & ACCESS <span class="spark">MANAGEMENT</span></div>
+          </div>
+          <div class="slide-index">05 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Role-based access for Super Admin, Admin, Teacher, Accountant, Student, and Parent.</li>
+              <li>Secure user registration, profile management, and permission control.</li>
+              <li>JWT-based authentication with password reset and session management.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Security</strong><span>Improves protection of institutional records and sensitive user data.</span></div>
+            <div class="impact-box"><strong>Accountability</strong><span>Every user operates within a clearly defined responsibility structure.</span></div>
+            <div class="impact-box"><strong>Governance</strong><span>Establishes the control foundation that supports every other system module.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Role-based access, authentication, and controlled permissions</div>
+          <div class="slide-progress"><span style="width:29%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 06 // Academic Structure</div>
+            <div class="slide-title">ACADEMIC STRUCTURE & <span class="spark">CLASSES</span></div>
+          </div>
+          <div class="slide-index">06 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Management of classes, arms, departments, and academic organization.</li>
+              <li>Teacher-to-class and teacher-to-subject assignments.</li>
+              <li>Student promotion and graduation workflows built into the platform.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Operational Clarity</strong><span>Defines a clean institutional academic structure for all downstream processes.</span></div>
+            <div class="impact-box"><strong>Reduced Confusion</strong><span>Simplifies class ownership, subject allocation, and administrative coordination.</span></div>
+            <div class="impact-box"><strong>Continuity</strong><span>Supports progression rules and organized movement across academic levels.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Classes, departments, assignments, and progression logic</div>
+          <div class="slide-progress"><span style="width:35%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 07 // Subjects and Curriculum</div>
+            <div class="slide-title">SUBJECTS & <span class="spark">CURRICULUM</span></div>
+          </div>
+          <div class="slide-index">07 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Creation and categorization of core and elective subjects.</li>
+              <li>Subject linkage to assessments and question banks.</li>
+              <li>Performance tracking and academic visibility at subject level.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Curriculum Structure</strong><span>Supports cleaner mapping of what is taught, assessed, and reported.</span></div>
+            <div class="impact-box"><strong>Performance Visibility</strong><span>Allows subject-level performance review for stronger interventions.</span></div>
+            <div class="impact-box"><strong>Consistency</strong><span>Creates a better link between classroom delivery and institutional reporting.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Subject definition, categorization, assessment linkage, and tracking</div>
+          <div class="slide-progress"><span style="width:41%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 08 // Academic Sessions</div>
+            <div class="slide-title">ACADEMIC SESSIONS & <span class="spark">TERMS</span></div>
+          </div>
+          <div class="slide-index">08 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Definition and management of academic years and terms.</li>
+              <li>Term closure with automatic locking of previous sessions.</li>
+              <li>Controlled grading windows and reporting periods.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Record Integrity</strong><span>Protects historical academic data from unapproved changes.</span></div>
+            <div class="impact-box"><strong>Process Discipline</strong><span>Creates order around when grading, editing, and reporting can occur.</span></div>
+            <div class="impact-box"><strong>Administrative Control</strong><span>Supports a cleaner cycle-based school management process.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Academic cycle control, term closure, and data locking</div>
+          <div class="slide-progress"><span style="width:47%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 09 // Grading and Reports</div>
+            <div class="slide-title">GRADING & REPORT <span class="spark">CARD SYSTEM</span></div>
+          </div>
+          <div class="slide-index">09 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Flexible grading rubrics that may be institution-wide or subject-specific.</li>
+              <li>Custom report templates with headers, logos, comments, and grading keys.</li>
+              <li>Professional PDF report generation with digital signatures.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Professional Output</strong><span>Produces institution-grade report cards suitable for parents and leadership review.</span></div>
+            <div class="impact-box"><strong>Customization</strong><span>Allows branded reporting with school identity and contextual academic notes.</span></div>
+            <div class="impact-box"><strong>Efficiency</strong><span>Reduces manual formatting and improves reporting consistency across classes.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Flexible grading rules and branded report generation</div>
+          <div class="slide-progress"><span style="width:53%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 10 // Finance</div>
+            <div class="slide-title">FINANCE & PAYMENT <span class="spark">MANAGEMENT</span></div>
+          </div>
+          <div class="slide-index">10 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Fee structure setup, invoicing, and receipt generation.</li>
+              <li>Real-time balance tracking and payment history.</li>
+              <li>Support for online and offline payment workflows.</li>
+              <li>Financial reports by term and session.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Financial Transparency</strong><span>Improves visibility into collections, balances, and payment patterns.</span></div>
+            <div class="impact-box"><strong>Administrative Efficiency</strong><span>Reduces manual receipt handling and fragmented fee tracking.</span></div>
+            <div class="impact-box"><strong>Reporting Strength</strong><span>Provides structured financial insight for school leadership and audit review.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Fees, invoices, receipts, balances, and reporting</div>
+          <div class="slide-progress"><span style="width:59%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 11 // Examination System</div>
+            <div class="slide-title">EXAMINATION & QUESTION <span class="spark">BANK</span></div>
+          </div>
+          <div class="slide-index">11 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Structured question bank by subject, topic, and difficulty.</li>
+              <li>Exam paper creation with randomization support.</li>
+              <li>Auto-grading for objective assessments.</li>
+              <li>Import and export capabilities for academic teams.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Assessment Scalability</strong><span>Supports repeatable and better-organized examination preparation.</span></div>
+            <div class="impact-box"><strong>Consistency</strong><span>Builds reusable academic assets that strengthen quality across terms.</span></div>
+            <div class="impact-box"><strong>Time Savings</strong><span>Reduces the overhead of repetitive question paper assembly.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Question banks, paper generation, and objective grading</div>
+          <div class="slide-progress"><span style="width:65%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 12 // Timetable</div>
+            <div class="slide-title">TIMETABLE <span class="spark">MANAGEMENT</span></div>
+          </div>
+          <div class="slide-index">12 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Automated weekly timetable generation for classes and teachers.</li>
+              <li>Conflict detection and resolution support.</li>
+              <li>Printable timetable formats for internal use and distribution.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Scheduling Accuracy</strong><span>Reduces clashes in room, teacher, and class assignments.</span></div>
+            <div class="impact-box"><strong>Speed</strong><span>Shortens the time required to prepare and publish timetables.</span></div>
+            <div class="impact-box"><strong>Clarity</strong><span>Makes timetable communication simpler for staff and students.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Automated schedules with conflict awareness</div>
+          <div class="slide-progress"><span style="width:71%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 13 // Communication</div>
+            <div class="slide-title">COMMUNICATION & <span class="spark">NOTIFICATIONS</span></div>
+          </div>
+          <div class="slide-index">13 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>In-app messaging, announcements, and SMS integration.</li>
+              <li>Dedicated parent-teacher communication portal.</li>
+              <li>Event and notification management workflows.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Parent Engagement</strong><span>Supports clearer and more consistent communication with families.</span></div>
+            <div class="impact-box"><strong>School Responsiveness</strong><span>Keeps updates, alerts, and announcements centralized and trackable.</span></div>
+            <div class="impact-box"><strong>Community Confidence</strong><span>Improves stakeholder trust through timely information delivery.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Messaging, announcements, SMS, and parent communication</div>
+          <div class="slide-progress"><span style="width:76%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 14 // Dashboard and Analytics</div>
+            <div class="slide-title">DASHBOARD & <span class="spark">ANALYTICS</span></div>
+          </div>
+          <div class="slide-index">14 / 17</div>
+        </div>
+        <div class="surface module-layout">
+          <div class="feature-card">
+            <h3>Core Features</h3>
+            <ul>
+              <li>Real-time overview of institutional performance indicators.</li>
+              <li>Charts for enrollment, academic performance, fee collection, and attendance.</li>
+              <li>Administrative alerts and quick report access.</li>
+            </ul>
+          </div>
+          <div class="impact-panel">
+            <div class="impact-box"><strong>Decision Support</strong><span>Enables leadership teams to see trends quickly and act with better context.</span></div>
+            <div class="impact-box"><strong>Visibility</strong><span>Highlights operational pressure points before they become larger issues.</span></div>
+            <div class="impact-box"><strong>Reporting Convenience</strong><span>Turns raw institutional data into clear and actionable summaries.</span></div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Real-time institutional visibility and insights</div>
+          <div class="slide-progress"><span style="width:82%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 15 // Additional Modules and Public Pages</div>
+            <div class="slide-title">ADDITIONAL MODULES &<br><span class="spark">PUBLIC PAGES</span></div>
+          </div>
+          <div class="slide-index">15 / 17</div>
+        </div>
+        <div class="surface two-col">
+          <div class="feature-card">
+            <h3>Additional Modules</h3>
+            <ul>
+              <li>Inventory management for books, uniforms, and equipment.</li>
+              <li>Student transfer requests with approval workflow.</li>
+              <li>Extendable architecture for future institutional needs.</li>
+            </ul>
+          </div>
+          <div class="feature-card">
+            <h3>Public and External Pages</h3>
+            <ul>
+              <li>Professional landing page, About Us, and Contact sections.</li>
+              <li>Online admission portal with application tracking.</li>
+              <li>Parent and student self-service login portals.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Inventory, transfer workflows, portals, and public-facing pages</div>
+          <div class="slide-progress"><span style="width:88%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 16 // Implementation Summary and Budget</div>
+            <div class="slide-title">IMPLEMENTATION SUMMARY & <span class="spark">BUDGET</span></div>
+          </div>
+          <div class="slide-index">16 / 17</div>
+        </div>
+        <div class="surface budget-layout">
+          <div class="stack">
+            <div class="info-card">
+              <h3>Project Summary</h3>
+              <div class="summary-metrics">
+                <div class="metric-card"><strong>12+</strong><p>Primary modules covering academics, finance, communication, and reporting.</p></div>
+                <div class="metric-card"><strong>1</strong><p>Unified ecosystem for institutional operations and oversight.</p></div>
+                <div class="metric-card"><strong>3</strong><p>Implementation phases from planning to deployment and onboarding.</p></div>
+              </div>
+            </div>
+            <div class="timeline-card">
+              <div class="timeline-title">Implementation Path</div>
+              <div class="timeline">
+                <div class="timeline-step"><strong>1</strong><span>Discovery, validation, scope confirmation, and planning.</span></div>
+                <div class="timeline-step"><strong>2</strong><span>Module-by-module platform development across core operational areas.</span></div>
+                <div class="timeline-step"><strong>3</strong><span>Testing, deployment, onboarding, and go-live support.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="info-card">
+            <h3>Project Budget</h3>
+            <div class="budget-amount">₦5,000,000</div>
+            <p class="budget-note">This budget covers the proposed design and development of the School Management & Reporting System as a comprehensive digital platform for academic, administrative, and financial excellence.</p>
+            <div class="bullet-grid" style="margin-top:18px">
+              <div class="bullet"><i class="fas fa-check"></i><span>Academic, finance, communication, and reporting workflows</span></div>
+              <div class="bullet"><i class="fas fa-check"></i><span>Professional public-facing pages and self-service portals</span></div>
+              <div class="bullet"><i class="fas fa-check"></i><span>Analytics, notifications, and structured operational controls</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Budgeted as a comprehensive school operations platform</div>
+          <div class="slide-progress"><span style="width:94%"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide" data-slide>
+      <div class="slide-wrap">
+        <div class="slide-top">
+          <div>
+            <div class="slide-kicker">Slide 17 // Thank You</div>
+            <div class="slide-title">THANK YOU & <span class="spark">NEXT STEPS</span></div>
+          </div>
+          <div class="slide-index">17 / 17</div>
+        </div>
+        <div class="surface">
+          <div class="thank-box">
+            <div>
+              <h3>Thank You</h3>
+              <p>The School Management & Reporting System is proposed as a practical, scalable, and professional solution for stronger academic administration, better communication, cleaner reporting, and improved institutional control. We look forward to the opportunity to build a platform that supports educational excellence in a measurable and lasting way.</p>
+            </div>
+          </div>
+        </div>
+        <div class="slide-footer">
+          <div class="slide-caption">Prepared for stakeholder review and next-step discussion</div>
+          <div class="slide-progress"><span style="width:100%"></span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="deck-nav" aria-label="Slide navigation">
+    <button class="nav-arrow prev" type="button" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+    <button class="nav-arrow next" type="button" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+  </div>
+
+  <div class="slide-dots" aria-label="Slide indicators"></div>
+
+  <div class="proposal-footer">
+    <div class="brand"><i class="fas fa-star"></i> SCHOOL MANAGEMENT SYSTEM PROPOSAL</div>
+    <div class="meta">
+      Presentation mode with keyboard and hover navigation<br>
+      Prepared for stakeholder review - 2026
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('[data-slide]'));
+const prevBtn = document.querySelector('.nav-arrow.prev');
+const nextBtn = document.querySelector('.nav-arrow.next');
+const navButtons = Array.from(document.querySelectorAll('.nav-links button[data-go]'));
+const dotsWrap = document.querySelector('.slide-dots');
+let activeIndex = 0;
+
+const dots = slides.map((_, index) => {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'slide-dot';
+  btn.setAttribute('aria-label', `Go to slide ${index + 1}`);
+  btn.addEventListener('click', () => goToSlide(index));
+  dotsWrap.appendChild(btn);
+  return btn;
+});
+
+function updateDeck() {
+  slides.forEach((slide, index) => slide.classList.toggle('is-active', index === activeIndex));
+  dots.forEach((dot, index) => dot.classList.toggle('is-active', index === activeIndex));
+  navButtons.forEach((btn) => btn.classList.toggle('is-active', Number(btn.dataset.go) === activeIndex));
+  prevBtn.disabled = activeIndex === 0;
+  nextBtn.disabled = activeIndex === slides.length - 1;
+}
+
+function goToSlide(index) {
+  activeIndex = Math.max(0, Math.min(index, slides.length - 1));
+  updateDeck();
+}
+
+function nextSlide() {
+  if (activeIndex < slides.length - 1) goToSlide(activeIndex + 1);
+}
+
+function prevSlide() {
+  if (activeIndex > 0) goToSlide(activeIndex - 1);
+}
+
+prevBtn.addEventListener('click', prevSlide);
+nextBtn.addEventListener('click', nextSlide);
+navButtons.forEach((btn) => btn.addEventListener('click', () => goToSlide(Number(btn.dataset.go))));
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowRight') nextSlide();
+  if (event.key === 'ArrowLeft') prevSlide();
+});
+
+updateDeck();
+</script>
+</body>
+</html>
